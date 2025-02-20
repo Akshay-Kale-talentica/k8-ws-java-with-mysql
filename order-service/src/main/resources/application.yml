@@ -1,11 +1,11 @@
 inventory:
-  url: http://localhost:8082
+  url: http://65.2.73.67:8082
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/coffee_shop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC # Replace <your_database_name>
-    username: coffee_shop_user # Replace
-    password: password # Replace
+    url: jdbc:mysql://database-1.cluster-ct66kgqog8ty.ap-south-1.rds.amazonaws.com:3306/coffee_shop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC # Replace <your_database_name>
+    username: admin # Replace
+    password: admin123 # Replace
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:

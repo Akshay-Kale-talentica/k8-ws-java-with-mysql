@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  inventory-service:
+    build: ./inventory-service
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://RDS Endpoint:3306/coffee_shop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=admin123
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL8Dialect
+    depends_on:
+      - mysql
+    networks:
+      - coffee-network
+    command: ["sh", "-c", "sleep 50 && java -jar inventory-service.jar"]
+
+  order-service:
+    build: ./order-service
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://RDS Endpoint:3306/coffee_shop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=admin123
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - INVENTORY_URL=http://inventory-service:8082
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL8Dialect
+    depends_on:
+      - inventory-service
+    networks:
+      - coffee-network
+    command: ["sh", "-c", "sleep 50 && java -jar order-service.jar"]
+
+networks:
+  coffee-network:
+    driver: bridge
+
